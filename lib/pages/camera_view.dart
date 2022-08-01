@@ -1,17 +1,16 @@
 import "package:flutter/material.dart";
 import "dart:io";
-import 'package:whatsapp/components/appBarActionBtn.dart';
+import 'package:whatsapp/components/app_bar_action_button.dart';
 import 'package:whatsapp/pages/chat.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:developer' as developer;
 
 class CameraViewPage extends StatefulWidget {
-  String path;
-  bool isCamera;
-  
+  final String path;
+  final bool isCamera;
 
-  CameraViewPage({Key? key, required this.path, required this.isCamera})
+  const CameraViewPage({Key? key, required this.path, required this.isCamera})
       : super(key: key);
-
 
   @override
   State<CameraViewPage> createState() => _CameraViewPageState();
@@ -20,23 +19,21 @@ class CameraViewPage extends StatefulWidget {
 class _CameraViewPageState extends State<CameraViewPage> {
   late VideoPlayerController _controller;
   bool playPauseBtn = false;
- 
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(milliseconds: 500)).then((value){
-        setState(() {
-          playPauseBtn = false;
-        });
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      setState(() {
+        playPauseBtn = false;
       });
+    });
     _controller = VideoPlayerController.file(File(widget.path))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +41,24 @@ class _CameraViewPageState extends State<CameraViewPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         actions: [
-          AppBarActionBtn(
+          const AppBarActionBtn(
             iconName: Icons.crop_rotate,
             iconSize: 27,
           ),
           IconButton(
               onPressed: () {
-                print("sndn");
+                developer.log("sndn");
               },
-              icon: Icon(Icons.ac_unit)),
-          AppBarActionBtn(
+              icon: const Icon(Icons.ac_unit)),
+          const AppBarActionBtn(
             iconName: Icons.emoji_emotions,
             iconSize: 27,
           ),
-          AppBarActionBtn(
+          const AppBarActionBtn(
             iconName: Icons.title,
             iconSize: 27,
           ),
-          AppBarActionBtn(
+          const AppBarActionBtn(
             iconName: Icons.edit,
             iconSize: 27,
           ),
@@ -73,7 +70,7 @@ class _CameraViewPageState extends State<CameraViewPage> {
         color: Colors.black,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 162,
               child: widget.isCamera
@@ -83,19 +80,19 @@ class _CameraViewPageState extends State<CameraViewPage> {
                     )
                   : _controller.value.isInitialized
                       ? InkWell(
-                        onTap: () {
-                    setState(() {
-                      playPauseBtn=!playPauseBtn;
-                      _controller.value.isPlaying
-                          ? _controller.pause()
-                          : _controller.play();
-                    });
-                  },
-                        child: AspectRatio(
+                          onTap: () {
+                            setState(() {
+                              playPauseBtn = !playPauseBtn;
+                              _controller.value.isPlaying
+                                  ? _controller.pause()
+                                  : _controller.play();
+                            });
+                          },
+                          child: AspectRatio(
                             aspectRatio: _controller.value.aspectRatio,
                             child: VideoPlayer(_controller),
                           ),
-                      )
+                        )
                       : Container(),
             ),
             Positioned(
@@ -115,10 +112,10 @@ class _CameraViewPageState extends State<CameraViewPage> {
                           ),
                           width: MediaQuery.of(context).size.width * 0.82,
                           child: TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 prefixIcon: AppBarActionBtn(
                                   iconName: (Icons.photo_library_outlined),
-                                  ontapAction: const Chats(),
+                                  ontapAction: Chats(),
                                 ),
                                 suffixIcon: AppBarActionBtn(
                                   iconName: Icons.check_circle_outline_sharp,
@@ -157,18 +154,20 @@ class _CameraViewPageState extends State<CameraViewPage> {
                 ),
               ),
             ),
-            playPauseBtn?Align(
-              alignment: Alignment.center,
-              child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.black12,
-                  child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                      size: 50),
+            playPauseBtn
+                ? Align(
+                    alignment: Alignment.center,
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.black12,
+                      child: Icon(
+                          _controller.value.isPlaying
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          size: 50),
                     ),
-            ):Container(),
+                  )
+                : Container(),
           ],
         ),
       ),

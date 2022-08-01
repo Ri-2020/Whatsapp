@@ -9,7 +9,7 @@ class MoreOptionsToSend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 380,
       width: MediaQuery.of(context).size.width,
       child: Card(
@@ -158,10 +158,10 @@ class _MotsState extends State<Mots> {
                   const EdgeInsets.symmetric(vertical: 30, horizontal: 65),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 9.2,
-                    mainAxisSpacing: 18.5,
-                    ),
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 9.2,
+                  mainAxisSpacing: 18.5,
+                ),
                 itemCount: widget.list.length,
                 itemBuilder: (context, i) {
                   return OptionsToSend(

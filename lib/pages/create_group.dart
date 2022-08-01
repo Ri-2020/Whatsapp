@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:whatsapp/data/UserInfo.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+import 'package:whatsapp/data/user_info.dart';
 import 'package:whatsapp/models/chat_model.dart';
 
 class CreateGroupPage extends StatefulWidget {
-  CreateGroupPage({Key? key}) : super(key: key);
+  const CreateGroupPage({Key? key}) : super(key: key);
 
   @override
   State<CreateGroupPage> createState() => _CreateGroupPageState();

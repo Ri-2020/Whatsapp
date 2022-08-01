@@ -1,14 +1,12 @@
-import 'dart:math';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:flutter/rendering.dart';
+// import 'package:gallery_saver/gallery_saver.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:whatsapp/main.dart';
-import 'package:whatsapp/pages/cameraView.dart';
+import 'package:whatsapp/pages/camera_view.dart';
 
 // late List<CameraDescription> cameras;
 
@@ -27,16 +25,13 @@ class _CameraState extends State<Camera> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _cameraController = CameraController(cameras[0], ResolutionPreset.veryHigh);
     cameraValus = _cameraController.initialize();
-    
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _cameraController.dispose();
   }
@@ -46,7 +41,7 @@ class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.85,
         child: Stack(
           children: [
@@ -156,17 +151,22 @@ class _CameraState extends State<Camera> {
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      isFrontCamera = !isFrontCamera;
-                                      transform = -1*transform;
-                                      flash = !flash;
-                                    });
-                                    int cameraPos = isFrontCamera?1:0;
-                                    _cameraController = CameraController(cameras[cameraPos], ResolutionPreset.veryHigh);
-                                    cameraValus = _cameraController.initialize();
+                                    setState(
+                                      () {
+                                        isFrontCamera = !isFrontCamera;
+                                        transform = -1 * transform;
+                                        flash = !flash;
+                                      },
+                                    );
+                                    int cameraPos = isFrontCamera ? 1 : 0;
+                                    _cameraController = CameraController(
+                                        cameras[cameraPos],
+                                        ResolutionPreset.veryHigh);
+                                    cameraValus =
+                                        _cameraController.initialize();
                                   },
                                   icon: Transform.scale(
-                                    scaleX : transform,
+                                    scaleX: transform,
                                     child: const Icon(
                                       Icons.flip_camera_ios,
                                       size: 28,

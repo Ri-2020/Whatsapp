@@ -1,14 +1,14 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/components/CustomUser.dart';
-import 'package:whatsapp/components/MoreOptionToSend.dart';
+import 'package:whatsapp/components/custom_user.dart';
+import 'package:whatsapp/components/more_options_to_send.dart';
 import 'package:whatsapp/components/OtherSideMsg.dart';
 import 'package:whatsapp/components/OwnMsgCard.dart';
 import 'package:whatsapp/components/PopUpMenuBtn.dart';
 import 'package:whatsapp/models/chat_model.dart';
 import 'package:whatsapp/models/more_option_to_send.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-
+import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'dart:developer' as developer;
 
 class UserChatPage extends StatefulWidget {
   const UserChatPage(this.userModel, {Key? key}) : super(key: key);
@@ -28,48 +28,29 @@ class _UserChatPageState extends State<UserChatPage> {
     "Wallpaper",
     "More"
   ];
-  List<MoreOption> moreOptionsToSend =[
+  List<MoreOption> moreOptionsToSend = [
     MoreOption(
-      name : "Document",
-      iconName : Icons.insert_drive_file,
-      color : Colors.indigo
-    ),
+        name: "Document",
+        iconName: Icons.insert_drive_file,
+        color: Colors.indigo),
     MoreOption(
-      name : "Document",
-      iconName : Icons.insert_drive_file,
-      color : Colors.indigo
-    ),
+        name: "Document",
+        iconName: Icons.insert_drive_file,
+        color: Colors.indigo),
+    MoreOption(name: "Camera", iconName: Icons.camera_alt, color: Colors.pink),
     MoreOption(
-      name : "Camera",
-      iconName : Icons.camera_alt,
-      color : Colors.pink
-    ),
+        name: "Audio", iconName: Icons.headset_rounded, color: Colors.orange),
     MoreOption(
-      name : "Audio",
-      iconName : Icons.headset_rounded,
-      color : Colors.orange
-    ),
+        name: "Payment", iconName: Icons.currency_rupee, color: Colors.teal),
     MoreOption(
-      name : "Payment",
-      iconName : Icons.currency_rupee,
-      color : Colors.teal
-    ),
-    MoreOption(
-      name : "Location",
-      iconName : Icons.location_pin,
-      color : Colors.green
-    ),
-    MoreOption(
-      name : "Contact",
-      iconName : Icons.person,
-      color : Colors.blue
-    )
+        name: "Location", iconName: Icons.location_pin, color: Colors.green),
+    MoreOption(name: "Contact", iconName: Icons.person, color: Colors.blue)
   ];
 
   bool showEnojiOption = false;
   FocusNode focusNode = FocusNode();
   final TextEditingController _txtController = TextEditingController();
-  late IO.Socket socket;
+  late io.Socket socket;
   @override
   void initState() {
     super.initState();
@@ -83,18 +64,17 @@ class _UserChatPageState extends State<UserChatPage> {
     });
   }
 
-  Future <void> initSocket() async{
-    try{
-      socket = IO.io("http://172.11.10.228:5000",<String, dynamic>{
-        "transports":["websocket"],
+  Future<void> initSocket() async {
+    try {
+      socket = io.io("http://172.11.10.228:5000", <String, dynamic>{
+        "transports": ["websocket"],
         "autoConnect": true,
-      }
-      );
+      });
       // socket.connect();
-      socket.onConnect((data) => print("connected"));
-      print(socket.connected);
-    }catch(e){
-      print(e);
+      socket.onConnect((data) => developer.log("connected"));
+      developer.log(socket.connected ? "True" : "False");
+    } catch (e) {
+      developer.log(e.toString());
     }
   }
 
@@ -102,7 +82,8 @@ class _UserChatPageState extends State<UserChatPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset("assets/img/whatsappbg.png",
+        Image.asset(
+          "assets/img/whatsappbg.png",
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           fit: BoxFit.cover,
@@ -110,36 +91,52 @@ class _UserChatPageState extends State<UserChatPage> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: userChatAppBar(context),
-          body: Container(
+          body: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height ,
+            height: MediaQuery.of(context).size.height,
             child: WillPopScope(
               child: Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height - 140,
                     child: ListView(
-                    children: [
-                      OwnMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhndi hry"),
-                      OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
-                      OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
-                      OtherSideMsgCard(text: "vhndi hry"),
-                      OtherSideMsgCard(text: "vhndi hry"),
-                      OtherSideMsgCard(text: "vhndi hry"),
-                    ],
-                ),
-                  ), 
-                Positioned(child: BottomTextMessaging(context))
+                      children: [
+                        OwnMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OtherSideMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OwnMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OtherSideMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OtherSideMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OwnMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OtherSideMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OwnMsgCard(
+                            text:
+                                "vhbj bij jnijo kni jbi vjb buj bjbiikrt fctgfyhgj hvh nidfcj jdncisd svndi"),
+                        OtherSideMsgCard(text: "vhndi hry"),
+                        OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
+                        OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
+                        OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
+                        OwnMsgCard(text: "vhbj bijnidfcj jdncisd svndi"),
+                        OtherSideMsgCard(text: "vhndi hry"),
+                        OtherSideMsgCard(text: "vhndi hry"),
+                        OtherSideMsgCard(text: "vhndi hry"),
+                      ],
+                    ),
+                  ),
+                  Positioned(child: BottomTextMessaging(context))
                 ],
               ),
               onWillPop: () {
@@ -159,6 +156,7 @@ class _UserChatPageState extends State<UserChatPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Align BottomTextMessaging(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -168,7 +166,7 @@ class _UserChatPageState extends State<UserChatPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width - 55,
                 child: Card(
                   margin: const EdgeInsets.only(left: 4, right: 2, bottom: 6),
@@ -209,7 +207,11 @@ class _UserChatPageState extends State<UserChatPage> {
                                   context: context,
                                   builder: (builder) {
                                     // return const MoreOptionsToSend();
-                                    return Mots(height: 380, list: moreOptionsToSend,borderR: 15, );
+                                    return Mots(
+                                      height: 380,
+                                      list: moreOptionsToSend,
+                                      borderR: 15,
+                                    );
                                   },
                                 );
                               },
@@ -243,6 +245,7 @@ class _UserChatPageState extends State<UserChatPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   SizedBox EmojiOptions() {
     return SizedBox(
       height: 250,
@@ -299,9 +302,10 @@ class _UserChatPageState extends State<UserChatPage> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             const Icon(Icons.arrow_back),
             CircularAvatarWidget(
-              isContactPage: true,
-              isChatPage: false,
-                userModel: widget.userModel, radiusOfAvatar: 22),
+                isContactPage: true,
+                isChatPage: false,
+                userModel: widget.userModel,
+                radiusOfAvatar: 22),
           ]),
         ),
       ),
@@ -341,5 +345,3 @@ class _UserChatPageState extends State<UserChatPage> {
   //   return ;
   // }
 }
-
-
